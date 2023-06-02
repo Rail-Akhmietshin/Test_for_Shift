@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:15
+    container_name: shift_db
+    command: -p 8797
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    env_file:
+      - .env.prod
+    expose:
+      - 8797
+  app:
+    build:
+      context: .
+    env_file:
+      - .env.prod
+    container_name: shift_app
+    ports:
+      - 5555:8000
+    depends_on:
+      - db
+
+volumes:
+  db_data:
